@@ -1,0 +1,1 @@
+export { PixelAnalyticsIntegration } from './PixelAnalyticsIntegration';

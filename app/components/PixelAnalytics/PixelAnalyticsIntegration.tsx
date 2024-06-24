@@ -19,11 +19,11 @@ type PixelAnalyticsIntegrationProps = {
 
 export const PixelAnalyticsIntegration = (props: PixelAnalyticsIntegrationProps) => {
     const { brandId } = props;
-    const { subscribe, register } = useAnalytics();
+    const { subscribe } = useAnalytics();
     const [src, setSrc] = useState<string | null>(null);
     const [scriptId, setScriptId] = useState<string | null>(null);
 
-    const {ready} = register('Pixel Analytics Integration');
+    // const {ready} = register('Pixel Analytics Integration');
     // const scriptStatus = useLoadScript('https://andreyshepelev.github.io/r/2525.js');
 
     const scriptStatus = useJavaScriptLoad(src, {
@@ -59,14 +59,14 @@ export const PixelAnalyticsIntegration = (props: PixelAnalyticsIntegrationProps)
         });
     }, []);
 
-    useEffect(() => {
-        if (scriptStatus === 'ready') {
-            ready();
-            console.log('useEffect([scriptStatus]): after ready() called: scriptStatus === ', scriptStatus);
-            console.log('useEffect([scriptStatus]): ', new Date());
-            console.log('useEffect([scriptStatus]): window._pp === ', window._pp);
-        }
-    }, [scriptStatus]);
+    // useEffect(() => {
+    //     if (scriptStatus === 'ready') {
+    //         ready();
+    //         console.log('useEffect([scriptStatus]): after ready() called: scriptStatus === ', scriptStatus);
+    //         console.log('useEffect([scriptStatus]): ', new Date());
+    //         console.log('useEffect([scriptStatus]): window._pp === ', window._pp);
+    //     }
+    // }, [scriptStatus]);
 
     return null;
 };

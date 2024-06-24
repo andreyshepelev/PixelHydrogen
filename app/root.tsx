@@ -1,4 +1,4 @@
-import {useNonce, getShopAnalytics, Analytics, Script} from '@shopify/hydrogen';
+import {useNonce, getShopAnalytics, Analytics} from '@shopify/hydrogen';
 import {defer, type LoaderFunctionArgs} from '@shopify/remix-oxygen';
 import {
   Links,
@@ -164,11 +164,6 @@ function Layout({children}: {children?: React.ReactNode}) {
           children
         )}
         <ScrollRestoration nonce={nonce} />
-        <Script
-            id="pebblepost_pixel"
-            type="text/javascript"
-            src="https://andreyshepelev.github.io/r/2525.js"
-        />
         <Scripts nonce={nonce} />
       </body>
     </html>

@@ -36,17 +36,18 @@ export const PixelAnalyticsIntegration = (props: PixelAnalyticsIntegrationProps)
         // Standard events
         subscribe('page_viewed', (data) => {
             console.log('PixelAnalyticsIntegration - Page viewed: ', data);
-            console.log('scriptStatus === ', scriptStatus);
 
             window._pp = window._pp || {};
             window._pp.brid = brandId;
             window._pp.referrerUrl = window.location.origin;
             window._pp.pageUrl = data.url;
             window._pp.targetUrl = data.url;
-            window._pp.ppid = getPPID();
+            // window._pp.ppid = getPPID();
+            const ppid = getPPID();
 
             console.log('subscribe: page_viewed event: ', new Date());
             console.log('subscribe: page_viewed event: window._pp === ', window._pp);
+            console.log('subscribe: page_viewed event: ppid === ', ppid);
 
             const pixelScriptSrc = getPixelScriptSrc(brandId);
             console.log('getPixelScriptSrc(brandId) === ', pixelScriptSrc);

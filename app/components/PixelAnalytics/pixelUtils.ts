@@ -3,7 +3,9 @@ export const getPPID = () => {
 
     if (!ppid) {
         ppid = guid();
-        setCookie('ppid', ppid, { domain: '.pebblepost.xyz' });
+        const rootDomain = getRootDomain();
+        console.log('rootDomain === ', rootDomain);
+        setCookie('ppid', ppid, { domain: `.${rootDomain}` });
     }
 
     return ppid;
@@ -59,4 +61,48 @@ export const setCookie = (key: string, value: string, attributes: any = {}) => {
     }
 
     document.cookie = updatedCookie;
+};
+
+export const deleteCookie = (key: string, attributes: any = {}) => {
+    setCookie(key, '', { ...attributes, 'max-age': -1 });
+};
+
+export const getPageHostname = (): string => {
+    let hostname = '';
+    try {
+        hostname = top && top.location && top.location.hostname;
+    } catch (e) {
+        // Suppress cross-domain exception when JS is loaded in double nested iframe
+        // TODO: Consider sending errors caught here to a /cross-domain logging endpoint
+    }
+    // "document" should never be null in a browser
+    return hostname || (document && document.location && document.location.hostname);
+};
+
+export const getRootDomain = (): string => {
+    const hostname = getPageHostname();
+    const domainParts = hostname.split('.');
+    if (domainParts.length === 2) {
+        return hostname;
+    }
+
+    const testCookie = '__ppid_cookie_test__';
+    let domainLevel = 2;
+
+    while (domainLevel <= domainParts.length) {
+        try {
+            const rootDomain = domainParts.slice(-1 * domainLevel).join('.');
+            setCookie(testCookie, testCookie, { domain: `.${rootDomain}` });
+            if (getCookie(testCookie) === testCookie) {
+                deleteCookie(testCookie, { domain: `.${rootDomain}` });
+                return rootDomain;
+            }
+        } catch (e) {
+            // Suppress an error occurred
+        }
+
+        domainLevel += 1;
+    }
+
+    return hostname;
 };

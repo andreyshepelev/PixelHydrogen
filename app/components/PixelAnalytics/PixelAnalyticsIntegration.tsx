@@ -23,51 +23,25 @@ export const PixelAnalyticsIntegration = (props: PixelAnalyticsIntegrationProps)
     const [src, setSrc] = useState<string | null>(null);
     const [scriptId, setScriptId] = useState<string | null>(null);
 
-    // const {ready} = register('Pixel Analytics Integration');
-    // const scriptStatus = useLoadScript('https://andreyshepelev.github.io/r/2525.js');
-
-    const scriptStatus = useJavaScriptLoad(src, {
+    useJavaScriptLoad(src, {
         shouldPreventLoad: false,
         removeOnUnmount: true,
         id: scriptId,
     });
 
     useEffect(() => {
-        // Standard events
         subscribe('page_viewed', (data) => {
-            console.log('PixelAnalyticsIntegration - Page viewed: ', data);
-
-            window._pp = window._pp || {};
+            window._pp = window._pp ?? {};
             window._pp.brid = brandId;
             window._pp.referrerUrl = window.location.origin;
             window._pp.pageUrl = data.url;
             window._pp.targetUrl = data.url;
-            // window._pp.ppid = getPPID();
-            const ppid = getPPID();
+            window._pp.ppid = getPPID();
 
-            console.log('subscribe: page_viewed event: ', new Date());
-            console.log('subscribe: page_viewed event: window._pp === ', window._pp);
-            console.log('subscribe: page_viewed event: ppid === ', ppid);
-
-            const pixelScriptSrc = getPixelScriptSrc(brandId);
-            console.log('getPixelScriptSrc(brandId) === ', pixelScriptSrc);
-
-            const pixelScriptId = getScriptId('pp-pixel-script');
-            console.log('pixelScriptId === ', pixelScriptId);
-
-            setSrc(pixelScriptSrc);
-            setScriptId(pixelScriptId);
+            setSrc(getPixelScriptSrc(brandId));
+            setScriptId(getScriptId('pp-pixel-script'));
         });
     }, []);
-
-    // useEffect(() => {
-    //     if (scriptStatus === 'ready') {
-    //         ready();
-    //         console.log('useEffect([scriptStatus]): after ready() called: scriptStatus === ', scriptStatus);
-    //         console.log('useEffect([scriptStatus]): ', new Date());
-    //         console.log('useEffect([scriptStatus]): window._pp === ', window._pp);
-    //     }
-    // }, [scriptStatus]);
 
     return null;
 };

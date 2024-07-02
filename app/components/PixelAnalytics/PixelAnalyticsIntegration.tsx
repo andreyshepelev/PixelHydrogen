@@ -36,7 +36,7 @@ export const PixelAnalyticsIntegration = (props: PixelAnalyticsIntegrationProps)
             window._pp.referrerUrl = window.location.origin;
             window._pp.pageUrl = data.url;
             window._pp.targetUrl = data.url;
-            window._pp.ppid = getPPID();
+            // window._pp.ppid = getPPID();
 
             setSrc(getPixelScriptSrc(brandId));
             setScriptId(getScriptId('pp-pixel-script'));
